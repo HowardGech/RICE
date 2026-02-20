@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" width="100%" height="100%" role="img" aria-label="RICE: rice-shaped boundary containing enlarged 4-gene causal network with intervention I and unmeasured confounding U (dashed).">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" width="100%" height="100%" role="img" aria-label="RICE: rice-shaped boundary containing enlarged 4-gene causal network with intervention I on G2 and unmeasured confounding U (dashed).">
   <defs>
-    <!-- Smaller arrowheads -->
     <marker id="arrowSolid" markerWidth="7" markerHeight="6" refX="12" refY="3" orient="auto">
       <polygon points="0 0, 7 3, 0 6" fill="#333"/>
     </marker>
@@ -18,10 +17,9 @@
     </filter>
   </defs>
 
-  <!-- White background -->
   <rect width="420" height="520" fill="#FFFFFF"/>
 
-  <!-- Rice grain boundary -->
+  <!-- Rice boundary -->
   <path d="
       M 210 38
       C 310 54, 360 150, 360 260
@@ -36,41 +34,39 @@
     stroke-linejoin="round"
     filter="url(#softShadow)"/>
 
-  <!-- Subtle rice seam -->
   <path d="M 210 56 C 226 178, 226 342, 210 466"
     fill="none" stroke="#C19A6B" stroke-width="2" opacity="0.30"/>
 
   <!-- EDGES -->
-  <!-- Gene causal edges: G1 -> G2 -> G3 and G1 -> G4 -->
   <g stroke="#333" stroke-width="3.2" fill="none" marker-end="url(#arrowSolid)">
-    <path d="M 150 210 L 270 255"/>   <!-- G1 -> G2 -->
-    <path d="M 270 285 L 210 365"/>   <!-- G2 -> G3 -->
-    <path d="M 150 225 L 150 345"/>   <!-- G1 -> G4 -->
+    <!-- FIXED: G1 -> G2 now points to center -->
+    <path d="M 150 210 L 270 270"/>
+
+    <path d="M 270 285 L 210 365"/>
+    <path d="M 150 225 L 150 345"/>
+    <path d="M 156.7 228.9 L 203.3 361.1"/>
   </g>
 
-  <!-- Intervention edge: I -> G1 -->
+  <!-- Intervention -->
   <g stroke="#7A1FA2" stroke-width="3.2" fill="none" marker-end="url(#arrowSolid)">
-    <path d="M 255 135 L 175 195"/>
+    <path d="M 270 130 L 270 250"/>
   </g>
 
-  <!-- Unmeasured confounding: U -> G1 and U -> G2 -->
+  <!-- Unmeasured confounding -->
   <g stroke="#999" stroke-width="2.8" fill="none" stroke-dasharray="7,5" marker-end="url(#arrowDashed)">
-    <path d="M 105 330 L 145 215"/>   <!-- U -> G1 -->
-    <path d="M 105 330 L 255 265"/>   <!-- U -> G2 -->
+    <path d="M 105 330 L 145 215"/>
+    <path d="M 105 330 L 255 265"/>
   </g>
 
   <!-- NODES -->
   <g>
-    <!-- Intervention -->
     <circle cx="270" cy="130" r="17" fill="#7A1FA2" stroke="#FFFFFF" stroke-width="3"/>
 
-    <!-- Genes -->
-    <circle cx="150" cy="210" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>  <!-- G1 -->
-    <circle cx="270" cy="270" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>  <!-- G2 -->
-    <circle cx="210" cy="380" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>  <!-- G3 -->
-    <circle cx="150" cy="360" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>  <!-- G4 -->
+    <circle cx="150" cy="210" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="270" cy="270" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="210" cy="380" r="20" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="150" cy="360" r="21" fill="#2F6FDB" stroke="#FFFFFF" stroke-width="3"/>
 
-    <!-- Unmeasured confounder -->
     <circle cx="105" cy="330" r="13" fill="#FFFFFF" stroke="#999" stroke-width="2.2" stroke-dasharray="5,3"/>
   </g>
 
@@ -86,7 +82,6 @@
     <text x="105" y="334" font-size="12" fill="#777">U</text>
   </g>
 
-  <!-- RICE label -->
   <text x="210" y="470"
     font-family="Helvetica, Arial, sans-serif"
     font-size="54"
