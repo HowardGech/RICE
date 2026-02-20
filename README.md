@@ -1,2 +1,2 @@
-# RICE<img src="logo.svg" align="right" width="155"/>
+# RICE<img src="ricelogo.svg" align="right" width="155"/>
 Robust Identification of Causal Effects
