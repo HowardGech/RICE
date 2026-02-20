@@ -99,9 +99,9 @@
 
   <text x="210" y="498"
     font-family="Helvetica, Arial, sans-serif"
-    font-size="14"
+    font-size="21"
     fill="#555"
     text-anchor="middle">
-    Robust Identification of Causal Effects
+    Robust Identification of Causal Network
   </text>
 </svg>
