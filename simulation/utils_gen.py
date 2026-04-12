@@ -4,16 +4,6 @@ import igraph as ig
 from scipy.stats import nbinom
 
 
-def is_dag(W: np.ndarray) -> bool:
-    """
-    Returns ``True`` if ``W`` is a DAG, ``False`` otherwise.
-    """
-    G = ig.Graph.Weighted_Adjacency(W.tolist())
-    return G.is_dag()
-
-
-
-
 def simulate_Pois(W: np.ndarray, 
                         theta: np.ndarray,
                         n: int, 

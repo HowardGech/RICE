@@ -1,10 +1,16 @@
-
 import numpy as np
 from tqdm.auto import tqdm
 import igraph as ig
 from scipy.special import expit as sigmoid
 import random
 from castle.metrics import MetricsDAG
+
+def is_dag(W: np.ndarray) -> bool:
+    """
+    Returns ``True`` if ``W`` is a DAG, ``False`` otherwise.
+    """
+    G = ig.Graph.Weighted_Adjacency(W.tolist())
+    return G.is_dag()
 
 
 def set_random_seed(seed):

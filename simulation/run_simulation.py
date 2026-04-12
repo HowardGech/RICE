@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import sys
+sys.path.append("../source/")
 from utils import *
 from scRICE_CF import *
 import cupy as cp
@@ -15,9 +16,9 @@ from sklearn.linear_model import LinearRegression as LR
 results = pd.DataFrame(columns=['measure', 'value'])
 
 
-n, p, s0, graph_type, intervention = int(args[1]), int(args[2]), int(args[3]), args[4], args[5]
+n, p, s0, graph_type, intervention, job_id = int(args[1]), int(args[2]), int(args[3]), args[4], args[5], int(args[6])
 set_random_seed(job_id)
-npz_file = np.load(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}.npz', allow_pickle=True)
+npz_file = np.load(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_job{job_id}.npz', allow_pickle=True)
 
 X = npz_file['X']
 W_true = npz_file['W']
@@ -172,3 +173,5 @@ acc['peak_gpu_mem_mb'] = stats['peak_mb']
 
 for m in acc.keys():
     results = pd.concat([results, pd.DataFrame({'measure': m, 'value': acc[m]},index=[0])], ignore_index=True)
+
+results.to_csv(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_job{job_id}_result.csv', index=False)
