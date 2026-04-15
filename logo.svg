@@ -82,7 +82,7 @@
     <text x="105" y="334" font-size="12" fill="#777">U</text>
   </g>
 
-  <text x="210" y="470"
+  <text x="210" y="450"
     font-family="Helvetica, Arial, sans-serif"
     font-size="54"
     font-weight="800"
@@ -92,11 +92,13 @@
     RICE
   </text>
 
-  <text x="210" y="498"
-    font-family="Helvetica, Arial, sans-serif"
-    font-size="21"
-    fill="#555"
-    text-anchor="middle">
-    Robust Identification of Causal Network
-  </text>
+<text x="210" y="488"
+  font-family="Helvetica, Arial, sans-serif"
+  font-size="21"
+  fill="#555"
+  text-anchor="middle">
+  <tspan x="210" dy="-20">Robust Identification</tspan>
+<tspan x="210" dy="20">of</tspan>
+  <tspan x="210" dy="20">Causal Entanglements</tspan>
+</text>
 </svg>
