@@ -19,7 +19,7 @@ results = pd.DataFrame(columns=['measure', 'value'])
 args = sys.argv[1:]
 n, p, s0, graph_type, intervention, job_id = int(args[0]), int(args[1]), int(args[2]), args[3], args[4], int(args[5])
 set_random_seed(job_id)
-npz_file = np.load(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_job{job_id}.npz', allow_pickle=True)
+npz_file = np.load(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_{intervention}_job{job_id}.npz', allow_pickle=True)
 
 X = npz_file['X']
 W_true = npz_file['W']
@@ -175,4 +175,4 @@ acc['peak_gpu_mem_mb'] = stats['peak_mb']
 for m in acc.keys():
     results = pd.concat([results, pd.DataFrame({'measure': m, 'value': acc[m]},index=[0])], ignore_index=True)
 
-results.to_csv(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_job{job_id}_result.csv', index=False)
+results.to_csv(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_{intervention}_job{job_id}_result.csv', index=False)
