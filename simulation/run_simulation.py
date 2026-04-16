@@ -11,12 +11,13 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 import time
 from sklearn.linear_model import LinearRegression as LR
+import ruptures as rpt
 
 
 results = pd.DataFrame(columns=['measure', 'value'])
 
-
-n, p, s0, graph_type, intervention, job_id = int(args[1]), int(args[2]), int(args[3]), args[4], args[5], int(args[6])
+args = sys.argv[1:]
+n, p, s0, graph_type, intervention, job_id = int(args[0]), int(args[1]), int(args[2]), args[3], args[4], int(args[5])
 set_random_seed(job_id)
 npz_file = np.load(f'data/n{n//1000}k_p{p}_s{s0}_{graph_type}_job{job_id}.npz', allow_pickle=True)
 

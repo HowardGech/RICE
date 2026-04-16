@@ -9,14 +9,12 @@ import time
 
 
 args = sys.argv[1:]
-intervention = str(args[0])
-job_id = int(args[1])
+n, p, s0, graph_type, intervention, job_id = int(args[0]), int(args[1]), int(args[2]), args[3], args[4], int(args[5])
 hard_intervention = False if intervention == 'soft' else True
 
 set_random_seed(job_id)
 
 
-n, p, s0, graph_type = 100000,500,2000, 'ER'
 B_true = simulate_dag(p, s0, graph_type)
 W_true = simulate_parameter(B_true, w_ranges = ((-1, -.5), (.5, 1)))
 

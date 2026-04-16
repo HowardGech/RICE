@@ -2,7 +2,9 @@ import numpy as np
 import typing
 import igraph as ig
 from scipy.stats import nbinom
-
+import sys
+sys.path.append('../source/')
+from utils import *
 
 def simulate_Pois(W: np.ndarray, 
                         theta: np.ndarray,
