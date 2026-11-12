@@ -1,32 +1,39 @@
 # File manifest
 
-Every file in the repository, what it does, and how far it has been verified.
+Every file, what it does, and how far it has been verified.
 
 | tag | meaning |
 |---|---|
-| original | unchanged from the previous version of this repository |
-| self-test passes | `--selftest` was run and passed; for the generators it checks that the zero setting reproduces `sim_base` |
+| tested here | run end to end on the shipped example and on deliberately broken inputs |
+| self-test passes | `--selftest` was run and passed |
 | stand-in tested | exercised against synthetic arrays in the real data layout, not on real data |
 | GPU only | imports CuPy at module scope; cannot be validated without a GPU |
+| original | unchanged from the previous version of this repository |
 | syntax only | parses, or passes `bash -n`; never executed |
 
-All eight self-tests pass, including `sim_nonlinear_confounding.py`, which had not been run
-before this cleanup.
+## Part 1 — the method
 
-### `source/`
+### `rice/`
 
-- **__pycache__** [doc]
+- **config.json** [doc]
+- **run_rice.py** [tested here] — Run RICE on your own single-cell perturbation data. python run_rice.py --counts counts.csv --perturbations design.csv --out result
 - **scRICE_CF.py** [GPU only]
 - **scRICE_eff.py** [GPU only] — scRICE with learnable per-gene knockdown efficacy. Extends the published scRICE_CF model by replacing the binary soft/hard interve
 - **utils.py** [original]
 
-### `simulation/`
+### `rice/example_data/`
 
-- **__pycache__** [doc]
-- **analysis** [doc]
-- **drivers** [doc]
+- **counts.csv** [data]
+- **covariates.csv** [data]
+- **perturbations.csv** [data]
+- **true_network.npz** [data]
+
+
+## Part 2 — reproduction
+
+### `reproduction/simulation/`
+
 - **example.ipynb** [doc]
-- **figures** [doc]
 - **gen_simulation.py** [original]
 - **run_simulation.py** [GPU only]
 - **sim_base.py** [syntax only]
@@ -38,10 +45,9 @@ before this cleanup.
 - **sim_nonlinear_confounding.py** [self-test passes] — Nonlinear latent confounding: two data-generating processes. Both act ONLY on the latent contribution to gene j's linear predictor
 - **sim_partial_efficacy.py** [syntax only] — Partial knockdown: upstream regulation is retained in perturbed cells in proportion to a per-gene efficacy e_j in [0, 1]. e_j = 0 
 - **sim_sparse_confounding.py** [self-test passes] — SPARSE NONLINEAR CONFOUNDING: only a fraction of genes is confounded. The mechanism and its parameters are FIXED; the only thing t
-- **submit** [doc]
 - **utils_gen.py** [original]
 
-### `simulation/drivers/`
+### `reproduction/simulation/drivers/`
 
 - **fit_cf_comparison.py** [GPU only] — Fit rcf / fcf / nocf on each configuration of one replicate. rcf reduced control function -- gene i regressed on its OWN indicator
 - **fit_crossguide.py** [GPU only] — Fit RICE under a direct cross-gene guide effect, comparing control-function variants. Three arms on the same dataset: rcf reduced 
@@ -55,7 +61,7 @@ before this cleanup.
 - **patch_count_rescale.py** [syntax only] — Fix the count-rescale overflow in the negative-binomial simulators. python patch_count_rescale.py sim_base.py sim_crossguide.py TH
 - **run_local_demo.py** [syntax only] — Local (CPU) KD-efficacy simulation. Reduced scale relative to the cluster pipeline in eff_pipeline/, but fully replicated and para
 
-### `simulation/submit/`
+### `reproduction/simulation/submit/`
 
 - **job_cfcompare.sh** [syntax only]
 - **job_cfcompare_cpu.sh** [syntax only]
@@ -76,9 +82,8 @@ before this cleanup.
 - **job_mismatch_cpu.sh** [syntax only]
 - **job_sensitivity.sh** [syntax only]
 
-### `simulation/analysis/`
+### `reproduction/simulation/analysis/`
 
-- **__pycache__** [doc]
 - **compare_control_functions.py** [GPU only] — Control-function comparison, generation through fitting, in one file. python compare_control_functions.py --stage both # one repli
 - **confounder_effect_size_measured.py** [syntax only] — Effect size of the unmeasured confounders, measured from a stored simulation file. Nothing is re-simulated: job_gen_cova.py saves 
 - **confounder_effect_size_theory.py** [syntax only] — Latent-confounder effect sizes for the d = 2..10 sweep, for ALL THREE NB generators that job_gen_cova.py can produce, because the 
@@ -90,16 +95,15 @@ before this cleanup.
 - **sortability_sweep.py** [self-test passes] — Complete sortability / order-sufficiency result over the stored confounding sweep. Covers both intervention regimes, every confoun
 - **summarize_efficacy.py** [GPU only] — Summarise and plot the adaptive-efficacy job array. Reads the per-replicate CSVs written by fit_efficacy.py, aggregates over repli
 
-### `simulation/figures/`
+### `reproduction/simulation/figures/`
 
 - **make_ordering_table_tex.py** [stand-in tested] — LaTeX table: RICE against the three ordering baselines, per intervention and per confounding setting. Baselines are read from sort
 - **plot_confounding_sweep.py** [stand-in tested] — Figure for the latent-confounding sweep: recovery metrics against the number of latent factors.
 - **plot_control_function_violation.py** [stand-in tested] — Control-function comparison across exclusion-restriction violation regimes. Reads the per-replicate CSVs written by fit_cf_compari
 - **plot_selection_brackets.py** [stand-in tested] — Annotation row for the dependent-assignment figure: the realised correlation between the perturbation indicator and the latent sta
 
-### `perturbseq/`
+### `reproduction/perturbseq/`
 
-- **cells** [doc]
 - **compute_ate.py** [syntax only] — Vanilla average treatment effects for every (perturbed gene i -> gene j) pair. This is the same regression real_differential_analy
 - **estimate_confounding.py** [syntax only] — Estimate how confounded a real CRISPRi Perturb-seq screen is, on the scale of the simulated latent-factor sweep. WHAT THIS DOES AN
 - **export_enrichment_tables.py** [syntax only] — Full GO enrichment result for all modules, as one CSV -- queried the way the original plotting loop queries, with no cache in the 
@@ -107,7 +111,7 @@ before this cleanup.
 - **topk_significance.py** [syntax only] — Proportion of significant perturbation effects among the top-k edges, for several network-inference methods at matched edge counts
 - **write_significance_csvs.py** [syntax only] — {ctype}_{method}_significance_{te,de}.csv for ALL FOUR methods. Generalizes real_differential_analysis.ipynb cell 68 (= real_soft_
 
-### `perturbseq/cells/`
+### `reproduction/perturbseq/cells/`
 
 - **assignment_correlation.py** [stand-in tested] — Realised dependence per selection strength, for the brackets under the x axis. The generator stores corr_perturbed_u in each .npz'
 - **ate_acyclicity.py** [stand-in tested] — Build a graph from the FDR-significant ATEs and test whether it is acyclic. Edge i -> j iff the ATE of perturbing i on j is signif
@@ -124,7 +128,7 @@ before this cleanup.
 - **perturbation_balance.py** [stand-in tested] — Is perturbation assignment associated with cell-level covariates, and does effective uptake depend on them? (Reviewer Comment 5.) 
 - **significance_figure.py** [stand-in tested] — Top-k significance figure, both datasets, read from the per-method CSVs written by write_significance_csvs.py: {ctype}_{method}_si
 
-### `docs/`
+### `reproduction/docs/`
 
 - **MANIFEST.md** [doc]
 - **README_efficacy.md** [doc]
@@ -133,31 +137,25 @@ before this cleanup.
 - **efficacy_diagnostics.md** [doc]
 - **scgraph_code_map.md** [doc]
 
-## Consolidated in this cleanup
+## Consolidated and verified in the cleanup
 
 **One generator.** `simulate_NB_tgt`, `_simulate_single_equation` and `is_dag` had been
 copied into `compare_control_functions.py` and `run_sensitivity_arms.py`, where the copies
 carried an overflow guard the base module lacked. They now live only in `sim_base.py`.
-Verified: with the default `apply_clip=False`, `sim_base.simulate_NB_tgt` reproduces the
-previous `simulation_soft_IV.simulate_NB_tgt` bit-for-bit on the same seed.
+With the default `apply_clip=False`, `sim_base.simulate_NB_tgt` reproduces the previous
+`simulation_soft_IV.simulate_NB_tgt` bit-for-bit on the same seed.
 
-**The overflow guard is opt-in and is not cosmetic.** The mean floor can undo the cap when
-one cell is extreme; `exp(m)` then exceeds the representable integer range and `nbinom.rvs`
-returns negative counts. `apply_clip=True` clips elementwise at the cap and prevents that,
-but it also changes ordinary draws: at p=12, n=400, d=3 with g=log(1+x) it moved the maximum
-count from 7518 to 376 on one seed. Clipped and unclipped runs must not be pooled. The two
-scripts that previously always clipped now pass `apply_clip=True` explicitly, so their
-behaviour is unchanged.
+**The overflow guard is opt-in and is not cosmetic.** At p=12, n=400, d=3 with g=log(1+x)
+it moved the maximum count from 7518 to 376 on one seed, so clipped and unclipped runs must
+not be pooled. The two scripts that always clipped now pass `apply_clip=True` explicitly.
 
 **One sortability module.** `parse_tag`, `varsortability`, `r2sortability` and `sortnregress`
-were copied into three scripts and had drifted. They now live in
-`simulation/analysis/sortability.py`; the bodies kept are the ones the published sweep ran.
+were copied into three scripts and had drifted; they now live in `analysis/sortability.py`.
 A stale docstring was corrected: it described the L1 penalty as chosen by cross-validation
-where all three copies in fact used `LassoLarsIC(criterion='bic')`.
+where all three copies used `LassoLarsIC(criterion='bic')`.
 
 `stem_for` and `validate_counts` remain per-file: each arm names its outputs after its own
-parameters and checks its own severity knob, so these are different functions sharing a name,
-not copies.
+parameters and checks its own severity knob.
 
 ## Renamed
 

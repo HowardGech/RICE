@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas
 import sys
-sys.path.append('../source/')
+sys.path.append('../../rice')
 from scRICE_CF import *
 from utils import *
 import cupy as cp

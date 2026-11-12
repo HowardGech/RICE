@@ -1,0 +1,43 @@
+{
+  "preprocessing": {
+    "transform": "log1p_offset",
+    "size_factor": "total_umi_per_gene",
+    "standardize": true
+  },
+  "control_function": {
+    "mode": "gene_matched",
+    "include_covariates": true
+  },
+  "model": {
+    "intervention_type": "soft",
+    "add_intercept": true,
+    "regularizer": "binsum",
+    "binsum_k": null,
+    "pen1": 1e-4,
+    "pen2": 0,
+    "pen1_c": 0,
+    "pen2_c": 1e-2,
+    "lr": 1e-4,
+    "lr_coef_multiplier": 1,
+    "max_iter": 100,
+    "epochs": 10000,
+    "checkpoint": 2000,
+    "rho_init": 1.0,
+    "h_tol": 1e-4,
+    "loss_tol": 1e-5,
+    "dtype": "float64",
+    "seed": 0,
+    "verbose": true
+  },
+  "thresholding": {
+    "method": "changepoint",
+    "n_breakpoints": 1,
+    "w_threshold": 0.0,
+    "to_dag": true
+  },
+  "output": {
+    "save_weighted_matrix": true,
+    "save_edge_list": true,
+    "min_abs_weight_in_edge_list": 0.0
+  }
+}

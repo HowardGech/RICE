@@ -3,7 +3,7 @@ import typing
 import igraph as ig
 from scipy.stats import nbinom
 import sys
-sys.path.append('../source/')
+sys.path.append('../../rice')
 from utils import *
 
 def simulate_Pois(W: np.ndarray, 
