@@ -1,0 +1,15 @@
+anndata
+cupy  # GPU only; pick the wheel matching your CUDA, e.g. cupy-cuda12x
+gcastle
+gseapy
+matplotlib
+numpy
+nvidia-ml-py
+pandas
+python-igraph
+ruptures
+scikit-learn
+scipy
+seaborn
+statsmodels
+tqdm
